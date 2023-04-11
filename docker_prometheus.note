@@ -1,0 +1,31 @@
+prometheus.yml
+--------------
+global:
+  scrape_interval:     10s 
+  evaluation_interval: 15s
+
+#alerting:
+#  alertmanagers:
+#  - static_configs:
+#    - targets:
+#      - localhost:9093
+
+#rule_files:
+  #- "first_rules.yml"
+  #- "second_rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+
+
+start the container
+-------------------
+docker run -d \
+-p 9090:9090 \
+-v /Users/bien/TSDB/prometheus.yml:/etc/prometheus/prometheus.yml \
+-v /Users/bien/TSDB/data:/prometheus \
+--restart unless-stopped \
+--name prometheus \
+prom/prometheus
