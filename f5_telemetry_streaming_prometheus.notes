@@ -1,0 +1,33 @@
+ -------------------------------------------
+    cat prometheus_f5_ts.json
+    {
+    "class": "Telemetry",
+    "My_Poller": {
+        "class": "Telemetry_System_Poller",
+        "interval": 0
+    },
+    "My_System": {
+        "class": "Telemetry_System",
+        "enable": "true",
+        "systemPoller": "My_Poller"
+    },
+    "My_Pull_Consumer": {
+        "class": "Telemetry_Pull_Consumer",
+        "type": "Prometheus",
+        "systemPoller": "My_Poller"
+    }
+}
+-------------------------------------------
+curl -k  -u admin:admin -X POST -d @prometheus_f5_ts.json -H 'content-type: application/json' https://1.2.3.4:8443/mgmt/shared/telemetry/declare
+-------------------------------------------
+  cat /etc/prometheus.yml
+  - job_name: 'f5_big_ip'
+    metrics_path: /mgmt/shared/telemetry/pullconsumer/My_Pull_Consumer
+    scheme: https
+    tls_config:
+        insecure_skip_verify: true
+    basic_auth:
+      username: 'admin'
+      password: 'admin'
+    static_configs:
+    - targets: ['1.2.3.4:8443']
