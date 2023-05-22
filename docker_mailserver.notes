@@ -1,0 +1,30 @@
+services:
+  mailserver:
+    image: docker.io/mailserver/docker-mailserver:latest
+    container_name: mailserver
+    hostname: mail
+    domainname: bienlab.com
+    ports:
+      - "25:25"
+      - "587:587"
+      - "993:993"
+    volumes:
+      - /home/bien/mailserver/dms/mail-data/:/var/mail/
+      - /home/bien/mailserver/dms/mail-state/:/var/mail-state/
+      - /home/bien/mailserver/dms/mail-logs/:/var/log/mail/
+      - /home/bien/mailserver/dms/config/:/tmp/docker-mailserver/
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/letsencrypt:/etc/letsencrypt
+    environment:
+      - ENABLE_SPAMASSASSIN=0
+      - SPAMASSASSIN_SPAM_TO_INBOX=0
+      - ENABLE_CLAMAV=0
+      - ENABLE_FAIL2BAN=0
+      - ENABLE_POSTGREY=0
+      - ENABLE_AMAVIS=0
+      - SSL_TYPE=letsencrypt
+      - POSTFIX_INET_PROTOCOLS=ipv4
+      - DOVECOT_INET_PROTOCOLS=ipv4
+        #    cap_add:
+        #      - NET_ADMIN # For Fail2Ban to work
+    restart: always
