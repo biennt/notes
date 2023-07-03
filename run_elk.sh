@@ -1,0 +1,1 @@
+docker run --name elk -d --restart unless-stopped -p 5601:5601 -p 9200:9200 -p 5140:5140 -p 5140:5140/udp -v /elk:/var/lib/elasticsearch -v /root/logstash.conf:/etc/logstash/conf.d/10-syslog.conf sebp/elk
