@@ -3,4 +3,5 @@ ExecStart=/usr/local/bin/k3s \
     --disable=servicelb \
     --disable=traefik \
     --disable=metrics-server \
+    --disable=local-storage \
     --write-kubeconfig-mode=644 \
