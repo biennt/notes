@@ -58,6 +58,8 @@ test -f /etc/ssh/ssh_host_dsa_key || dpkg-reconfigure openssh-server
 exit 0
 EOL
 
+chmod +x /etc/rc.local
+
 # Reset hostname
 cat /dev/null > /etc/hostname
 
