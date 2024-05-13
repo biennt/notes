@@ -1,3 +1,4 @@
+# read this first https://my.f5.com/manage/s/article/K40472403
 # Change these to your liking.
 	# This configuration will run once per second (DELAY)
 	# for 1800 iterations (1800 seconds == 30 minutes)
