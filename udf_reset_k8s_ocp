@@ -1,0 +1,36 @@
+sudo kubeadm reset --force
+sudo rm -rf /home/ubuntu/.kube /root/.kube
+sudo kubeadm init --apiserver-advertise-address=10.1.1.7 --pod-network-cidr=10.244.0.0/16
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+node1, node2:
+kubeadm reset --force
+
+
+
+kubectl get nodes
+kubectl get pods -A
+
+kubeadm join 10.1.1.7:6443 --token se4tjy.w2l97lc7qy5sn1w6 \
+        --discovery-token-ca-cert-hash sha256:bc6b054208d4c7e3484c61031adcd612b9e82e3312a142e47ddfa4f82b600c7c 
+
+
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentation/kube-flannel.yml
+kubectl get pods -A
+kubectl get nodes
+
+
+
+Renew cert OCP
+
+#!/bin/bash
+CLUSTER=ocp1
+oc config use-context default/api-$CLUSTER-f5-udf-com:6443/recovery
+
+while date ; do
+  oc get nodes
+  oc get csr --no-headers | grep Pending | awk '{print $1}' | xargs --no-run-if-empty oc  adm certificate approve
+  sleep 5
+done
