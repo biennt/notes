@@ -26,8 +26,8 @@ kubectl get nodes
 Renew cert OCP
 
 #!/bin/bash
-CLUSTER=ocp1
-oc config use-context default/api-$CLUSTER-f5-udf-com:6443/recovery
+
+oc config use-context default/okd-master1:8443/recovery
 
 while date ; do
   oc get nodes
